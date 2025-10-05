@@ -1,146 +1,195 @@
 <!DOCTYPE html>
-<html lang="pt-BT">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Calculadora científica</title>
+    <meta name="description" content="Calculadora científica avançada com gráficos, histórico e bloco de notas">
+    <meta name="theme-color" content="#0d1117">
+    <title>Calculadora Científica</title>
+    
+    <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.0/lib/browser/math.js"></script>
     <script src="https://cdn.plot.ly/plotly-2.20.0.min.js"></script>
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="calc.css">
 </head>
 
 <body>
 
-    <div class="calculator" role="application">
+    <div class="calculator" role="application" aria-label="Calculadora Científica">
 
         <header>
             <div>
                 <h1>Calculadora Científica</h1>
                 <div class="sub">Protótipo interativo • FrontEnd (math.js) • Histórico</div>
             </div>
-            <div class="sub">Teclado: Enter = calcular · ↑/↓ = Histórico · Esc = limpar</div>
+            <div class="sub">Teclado: Enter = calcular • ↑/↓ = Histórico • Esc = limpar</div>
         </header>
 
+        <!-- ====== COLUNA ESQUERDA ====== -->
         <section class="left">
-            <div class="display card" aria-label="display">
+            
+            <!-- Display Principal -->
+            <div class="display card" aria-label="Display da calculadora">
                 <div class="input-row">
-                    <input id="expr" placeholder="0" autocomplete="off" />
+                    <input 
+                        id="expr" 
+                        type="text"
+                        placeholder="Digite uma expressão matemática..." 
+                        autocomplete="off"
+                        aria-label="Campo de entrada de expressão"
+                    />
                     <div class="controls">
-                        <button id="evalBtn" class="btn">=</button>
-                        <button id="clearBtn" class="btn ghost">X</button>
+                        <button id="evalBtn" class="btn" aria-label="Calcular">=</button>
+                        <button id="clearBtn" class="btn ghost" aria-label="Limpar">C</button>
                     </div>
                 </div>
-                <div class="result" id="result">Resultado: —</div>
-                <div style="display:flex;gap:8px;align-items:center;">
+                
+                <div class="result" id="result" aria-live="polite">Resultado: —</div>
+                
+                <div style="display:flex; gap:8px; align-items:center; margin-top:12px; flex-wrap:wrap;">
                     <div class="toggle">
-                        <label class="small">Modo</label>
-                        <button id="degRad" class="chip">DEG</button>
+                        <label class="small">Modo angular</label>
+                        <button id="degRad" class="chip" aria-label="Alternar entre graus e radianos">DEG</button>
                     </div>
-                    <div style="margin-left:auto;display:flex;gap:8px;">
-                        <button id="copyRes" class="btn ghost">Copiar</button>
-                        <button id="saveFav" class="btn">Favorito</button>
+                    <div style="margin-left:auto; display:flex; gap:8px;">
+                        <button id="copyRes" class="btn ghost" aria-label="Copiar resultado">Copiar</button>
+                        <button id="saveFav" class="btn" aria-label="Salvar como favorito">★ Favorito</button>
                     </div>
                 </div>
             </div>
 
+            <!-- Teclado Virtual -->
             <div class="card">
-                <div class="keypad" id="keypad">
-                    <!-- row 1 -->
-                    <div class="key" data-insert="7">7</div>
-                    <div class="key" data-insert="8">8</div>
-                    <div class="key" data-insert="9">9</div>
-                    <div class="key op" data-insert="/">÷</div>
-                    <div class="key op" data-insert="^">^</div>
-                    <div class="key op" data-insert="(">(</div>
+                <div class="keypad" id="keypad" role="group" aria-label="Teclado numérico">
+                    <!-- Linha 1: Números 7-9, operações -->
+                    <div class="key" data-insert="7" role="button" tabindex="0">7</div>
+                    <div class="key" data-insert="8" role="button" tabindex="0">8</div>
+                    <div class="key" data-insert="9" role="button" tabindex="0">9</div>
+                    <div class="key op" data-insert="/" role="button" tabindex="0">÷</div>
+                    <div class="key op" data-insert="^" role="button" tabindex="0">^</div>
+                    <div class="key op" data-insert="(" role="button" tabindex="0">(</div>
 
-                    <!-- row 2 -->
-                    <div class="key" data-insert="4">4</div>
-                    <div class="key" data-insert="5">5</div>
-                    <div class="key" data-insert="6">6</div>
-                    <div class="key op" data-insert="*">x</div>
-                    <div class="key op" data-insert=",">,</div>
-                    <div class="key op" data-insert=")">)</div>
+                    <!-- Linha 2: Números 4-6, operações -->
+                    <div class="key" data-insert="4" role="button" tabindex="0">4</div>
+                    <div class="key" data-insert="5" role="button" tabindex="0">5</div>
+                    <div class="key" data-insert="6" role="button" tabindex="0">6</div>
+                    <div class="key op" data-insert="*" role="button" tabindex="0">×</div>
+                    <div class="key op" data-insert="," role="button" tabindex="0">,</div>
+                    <div class="key op" data-insert=")" role="button" tabindex="0">)</div>
 
-                    <!-- row 3 -->
-                    <div class="key" data-insert="1">1</div>
-                    <div class="key" data-insert="2">2</div>
-                    <div class="key" data-insert="3">3</div>
-                    <div class="key op" data-insert="-">-</div>
-                    <div class="key" data-insert="pi">π</div>
-                    <div class="key" data-insert="e">e</div>
+                    <!-- Linha 3: Números 1-3, operações -->
+                    <div class="key" data-insert="1" role="button" tabindex="0">1</div>
+                    <div class="key" data-insert="2" role="button" tabindex="0">2</div>
+                    <div class="key" data-insert="3" role="button" tabindex="0">3</div>
+                    <div class="key op" data-insert="-" role="button" tabindex="0">-</div>
+                    <div class="key op" data-insert="pi" role="button" tabindex="0">π</div>
+                    <div class="key op" data-insert="e" role="button" tabindex="0">e</div>
 
-                    <!-- row 4 -->
-                    <div class="key wide" data-insert="0">0</div>
-                    <div class="key" data-insert=".">.</div>
-                    <div class="key op" data-insert="+">+</div>
-                    <div class="key op" data-insert="ans">ans</div>
-                    <div class="key" data-insert="%">%</div>
+                    <!-- Linha 4: Zero e operações básicas -->
+                    <div class="key wide" data-insert="0" role="button" tabindex="0">0</div>
+                    <div class="key" data-insert="." role="button" tabindex="0">.</div>
+                    <div class="key op" data-insert="+" role="button" tabindex="0">+</div>
+                    <div class="key op" data-insert="ans" role="button" tabindex="0">ans</div>
+                    <div class="key op" data-insert="%" role="button" tabindex="0">%</div>
 
-                    <!-- funções -->
-                    <div class="key op" data-insert="sin(">sin(</div>
-                    <div class="key op" data-insert="cos(">cos(</div>
-                    <div class="key op" data-insert="tan(">tan(</div>
-                    <div class="key op" data-insert="asin(">asin</div>
-                    <div class="key op" data-insert="log10(">log</div>
-                    <div class="key op" data-insert="ln(">ln</div>
+                    <!-- Funções trigonométricas -->
+                    <div class="key op" data-insert="sin(" role="button" tabindex="0">sin</div>
+                    <div class="key op" data-insert="cos(" role="button" tabindex="0">cos</div>
+                    <div class="key op" data-insert="tan(" role="button" tabindex="0">tan</div>
+                    <div class="key op" data-insert="asin(" role="button" tabindex="0">asin</div>
+                    <div class="key op" data-insert="log10(" role="button" tabindex="0">log</div>
+                    <div class="key op" data-insert="ln(" role="button" tabindex="0">ln</div>
 
-                    <div class="key op" data-insert="sqrt">√</div>
-                    <div class="key op" data-insert="abs(">|x|</div>
-                    <div class="key op" data-insert="factorial(">x!</div>
-                    <div class="key op" data-insert="matrix(">mat()</div>
-                    <div class="key op" data-insert="det(">det()</div>
-                    <div class="key op" data-insert="inv(">inv()</div>
-
+                    <!-- Funções avançadas -->
+                    <div class="key op" data-insert="sqrt(" role="button" tabindex="0">√</div>
+                    <div class="key op" data-insert="abs(" role="button" tabindex="0">|x|</div>
+                    <div class="key op" data-insert="factorial(" role="button" tabindex="0">x!</div>
+                    <div class="key op" data-insert="matrix(" role="button" tabindex="0">mat</div>
+                    <div class="key op" data-insert="det(" role="button" tabindex="0">det</div>
+                    <div class="key op" data-insert="inv(" role="button" tabindex="0">inv</div>
                 </div>
             </div>
 
+            <!-- Gráfico -->
             <div class="card">
-                <div id="plot"></div>
+                <h3>Gráfico</h3>
+                <div id="plot" aria-label="Área do gráfico"></div>
             </div>
+
         </section>
 
+        <!-- ====== COLUNA DIREITA ====== -->
         <aside class="right">
+            
+            <!-- Histórico -->
             <div class="card">
-                <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div class="flex-between" style="margin-bottom:12px;">
+                    <strong>Histórico</strong>
+                    <div style="display:flex; gap:6px;">
+                        <button id="clearHistory" class="btn ghost" aria-label="Limpar histórico">Limpar</button>
+                        <button id="exportHistory" class="btn" aria-label="Exportar histórico">Exportar</button>
+                    </div>
+                </div>
+                <div class="history" id="history" aria-live="polite" aria-label="Lista de histórico"></div>
+            </div>
+
+            <!-- Configurações -->
+            <div class="card">
+                <h3>Configurações</h3>
+                <div style="margin-top:8px; display:flex; flex-direction:column; gap:12px;">
                     <div>
-                        <strong>Histórico</strong>
-                        <div style="display:flex;justify-content:space-between;align-items:center;">
-                            <button id="clearHistory" class="btn ghost">Limpar</button>
-                            <button id="exportHistory" class="btn">Exportar</button>
-                        </div>
+                        <label for="precision" class="small">Precisão (casas decimais)</label>
+                        <input 
+                            id="precision" 
+                            type="number" 
+                            min="0" 
+                            max="20" 
+                            value="8"
+                            aria-label="Número de casas decimais"
+                        />
                     </div>
-                    <div class="history" id="history"></div>
-                </div>
-
-                <div class="card">
-                    <strong>Config</strong>
-                    <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px;">
-                        <div class="small">Precisão (casas decimais)</div>
-                        <input id="precision" type="number" min="0" max="20" value="8" />
-                        <div class="small">Mostrar passos: (demo limitado)</div>
-                        <label><input id="showSteps" type="checkbox" /> Habilitar</label>
+                    <div>
+                        <div class="small" style="margin-bottom:4px;">Mostrar passos: (demo limitado)</div>
+                        <label>
+                            <input id="showSteps" type="checkbox" aria-label="Habilitar exibição de passos" />
+                            Habilitar
+                        </label>
                     </div>
                 </div>
+            </div>
 
-                <div class="card">
-                    <h3>Bloco de notas</h3>
-                    <textarea id="notepad" placeholder="Escreva suas anotações aqui..."
-                        style="width:100%; height:200px; padding:8px; border-radius:10px; border:1px solid #30363d; background:#161b22; color:#e6edf3;"></textarea>
-                    <button id="saveNotes" class="btn">Salvar</button>
-                </div>
+            <!-- Bloco de Notas -->
+            <div class="card">
+                <h3>Bloco de notas</h3>
+                <textarea 
+                    id="notepad" 
+                    placeholder="Escreva suas anotações aqui..."
+                    aria-label="Área de texto para anotações"
+                ></textarea>
+                <button id="saveNotes" class="btn" style="margin-top:8px; width:100%;" aria-label="Salvar anotações">Salvar Notas</button>
+            </div>
 
-                <div class="card">
-                    <h3>Desenho</h3>
-                    <canvas id="drawCanvas" width="500" height="300"
-                        style="border:1px solid #30363d; border-radius:10px; background:#161b22;"></canvas>
-                    <button id="clearCanvas" class="btn ghost">Limpar</button>
-                </div>
+            <!-- Canvas de Desenho -->
+            <div class="card">
+                <h3>Desenho</h3>
+                <canvas 
+                    id="drawCanvas" 
+                    width="500" 
+                    height="300"
+                    aria-label="Área de desenho interativa"
+                ></canvas>
+                <button id="clearCanvas" class="btn ghost" style="margin-top:8px; width:100%;" aria-label="Limpar desenho">Limpar Canvas</button>
+            </div>
 
         </aside>
+
     </div>
 
+    <!-- JavaScript -->
     <script src="calc.js"></script>
 
 </body>
