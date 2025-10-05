@@ -1,0 +1,231 @@
+      /* ====== VARIÁVEIS DE TEMA DARK ====== */
+        :root {
+            --bg-main: #0d1117; /* fundo geral */
+            --bg-card: #161b22; /* fundo dos cards */
+            --bg-hover: #1f6feb33; /* hover botão levemente azul */
+            --accent: #1f6feb; /* azul principal */
+            --accent-light: #58a6ff; /* azul claro */
+            --text: #e6edf3; /* cor do texto principal */
+            --text-dim: #8b949e; /* texto secundário */
+            --border: #30363d; /* borda cards/inputs */
+            --radius: 10px; /* borda arredondada */
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* sombra cards */
+            --transition: all 0.2s ease; /* transições suaves */
+        }
+
+        /* ====== ESTILO BASE ====== */
+        * {
+            box-sizing: border-box; /* padding + border incluído no tamanho */
+            font-family: "Segoe UI", Roboto, sans-serif; /* fonte padrão */
+        }
+
+        body {
+            background: var(--bg-main);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center; /* centraliza a calculadora horizontalmente */
+        }
+
+        .calculator {
+            display: flex;
+            gap: 20px; /* espaço entre colunas esquerda/direita */
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        /* ====== HEADER ====== */
+        header {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--accent-light);
+            font-size: 1.8rem;
+        }
+
+        .sub {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        /* ====== LAYOUT PRINCIPAL ====== */
+        .left {
+            flex: 2; /* ocupa mais espaço que a direita */
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .right {
+            flex: 1; /* ocupa menos espaço */
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* ====== CARD ====== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        /* ====== DISPLAY ====== */
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #expr {
+            flex: 1;
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-size: 1.2rem;
+            padding: 8px 12px;
+            transition: var(--transition);
+        }
+
+        #expr:focus {
+            border-color: var(--accent); /* destaque no foco */
+            outline: none;
+        }
+
+        .result {
+            margin-top: 8px;
+            color: var(--accent-light);
+            font-weight: 500;
+        }
+
+        /* ====== BOTÕES ====== */
+        .btn,
+        .key {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none; /* impede seleção de texto */
+        }
+
+        .btn:hover,
+        .key:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent);
+            color: var(--accent-light);
+        }
+
+        .btn.ghost {
+            background: transparent; /* estilo transparente para ghost buttons */
+        }
+
+        /* ====== KEYPAD ====== */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); /* 6 colunas */
+            gap: 8px;
+        }
+
+        .key {
+            text-align: center;
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        .key.wide {
+            grid-column: span 2; /* botão "0" maior */
+        }
+
+        /* ====== CONTROLES DE DISPLAY ====== */
+        .controls {
+            display: flex;
+            gap: 6px;
+        }
+
+        /* ====== CHIP / TOGGLE ====== */
+        .chip {
+            padding: 6px 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chip:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent);
+            color: var(--accent-light);
+        }
+
+        .small {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        /* ====== HISTORY / CONFIG ====== */
+        .history {
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto; /* scrollbar se necessário */
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        input[type="number"],
+        input[type="checkbox"] {
+            accent-color: var(--accent); /* cor do checkbox/número */
+        }
+
+        /* ====== SCROLLBAR PERSONALIZADA ====== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        /* ====== PLOT ====== */
+        #plot {
+            height: 300px; /* altura padrão do gráfico */
+        }
+
+        /* ====== RESPONSIVO ====== */
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .calculator { flex-direction: column; gap: 10px; }
+            .left, .right { flex: 1 1 100%; }
+            .keypad { grid-template-columns: repeat(6, 1fr); gap: 5px; }
+            .key.wide { grid-column: span 2; }
+            #expr { font-size: 1rem; padding: 6px 10px; }
+            .key { padding: 10px; font-size: 0.9rem; }
+            #plot { height: 200px; }
+        }
+
+        /* ====== CANVAS DESENHO ====== */
+        #drawCanvas {
+            width: 100%;
+            height: 300px; /* altura desktop padrão */
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            background: #161b22;
+        }
+
+        /* ajuste altura canvas para mobile */
+        @media (max-width: 768px) { #drawCanvas { height: 200px; } }
+        @media (max-width: 480px) { #drawCanvas { height: 150px; } }

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BT">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Calculadora científica</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.0/lib/browser/math.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.20.0.min.js"></script>
+    <link rel="stylesheet" href="calc.css">
+</head>
+
+<body>
+
+    <div class="calculator" role="application">
+
+        <header>
+            <div>
+                <h1>Calculadora</h1>
+                <div class="sub">Protótipo interativo • FrontEnd (math.js) • Histórico</div>
+            </div>
+            <div class="sub">Teclado: Enter = calcular · ↑/↓ = Histórico · Esc = limpar</div>
+        </header>
+
+        <section class="left">
+            <div class="display card" aria-label="display">
+                <div class="input-row">
+                    <input id="expr" placeholder="0" autocomplete="off" />
+                    <div class="controls">
+                        <button id="evalBtn" class="btn">=</button>
+                        <button id="clearBtn" class="btn ghost">X</button>
+                    </div>
+                </div>
+                <div class="result" id="result">Resultado: —</div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <div class="toggle">
+                        <label class="small">Modo</label>
+                        <button id="degRad" class="chip">DEG</button>
+                    </div>
+                    <div style="margin-left:auto;display:flex;gap:8px;">
+                        <button id="copyRes" class="btn ghost">Copiar</button>
+                        <button id="saveFav" class="btn">Favorito</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="keypad" id="keypad">
+                    <!-- row 1 -->
+                    <div class="key" data-insert="7">7</div>
+                    <div class="key" data-insert="8">8</div>
+                    <div class="key" data-insert="9">9</div>
+                    <div class="key op" data-insert="/">÷</div>
+                    <div class="key op" data-insert="^">^</div>
+                    <div class="key op" data-insert="(">(</div>
+
+                    <!-- row 2 -->
+                    <div class="key" data-insert="4">4</div>
+                    <div class="key" data-insert="5">5</div>
+                    <div class="key" data-insert="6">6</div>
+                    <div class="key op" data-insert="*">x</div>
+                    <div class="key op" data-insert=",">,</div>
+                    <div class="key op" data-insert=")">)</div>
+
+                    <!-- row 3 -->
+                    <div class="key" data-insert="1">1</div>
+                    <div class="key" data-insert="2">2</div>
+                    <div class="key" data-insert="3">3</div>
+                    <div class="key op" data-insert="-">-</div>
+                    <div class="key" data-insert="pi">π</div>
+                    <div class="key" data-insert="e">e</div>
+
+                    <!-- row 4 -->
+                    <div class="key wide" data-insert="0">0</div>
+                    <div class="key" data-insert=".">.</div>
+                    <div class="key op" data-insert="+">+</div>
+                    <div class="key op" data-insert="ans">ans</div>
+                    <div class="key" data-insert="%">%</div>
+
+                    <!-- funções -->
+                    <div class="key op" data-insert="sin(">sin(</div>
+                    <div class="key op" data-insert="cos(">cos(</div>
+                    <div class="key op" data-insert="tan(">tan(</div>
+                    <div class="key op" data-insert="asin(">asin</div>
+                    <div class="key op" data-insert="log10(">log</div>
+                    <div class="key op" data-insert="ln(">ln</div>
+
+                    <div class="key op" data-insert="sqrt">√</div>
+                    <div class="key op" data-insert="abs(">|x|</div>
+                    <div class="key op" data-insert="factorial(">x!</div>
+                    <div class="key op" data-insert="matrix(">mat()</div>
+                    <div class="key op" data-insert="det(">det()</div>
+                    <div class="key op" data-insert="inv(">inv()</div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div id="plot"></div>
+            </div>
+        </section>
+
+        <aside class="right">
+            <div class="card">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <strong>Histórico</strong>
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <button id="clearHistory" class="btn ghost">Limpar</button>
+                            <button id="exportHistory" class="btn">Exportar</button>
+                        </div>
+                    </div>
+                    <div class="history" id="history"></div>
+                </div>
+
+                <div class="card">
+                    <strong>Config</strong>
+                    <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px;">
+                        <div class="small">Precisão (casas decimais)</div>
+                        <input id="precision" type="number" min="0" max="20" value="8" />
+                        <div class="small">Mostrar passos: (demo limitado)</div>
+                        <label><input id="showSteps" type="checkbox" /> Habilitar</label>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Bloco de notas</h3>
+                    <textarea id="notepad" placeholder="Escreva suas anotações aqui..."
+                        style="width:100%; height:200px; padding:8px; border-radius:10px; border:1px solid #30363d; background:#161b22; color:#e6edf3;"></textarea>
+                    <button id="saveNotes" class="btn">Salvar</button>
+                </div>
+
+                <div class="card">
+                    <h3>Desenho</h3>
+                    <canvas id="drawCanvas" width="500" height="300"
+                        style="border:1px solid #30363d; border-radius:10px; background:#161b22;"></canvas>
+                    <button id="clearCanvas" class="btn ghost">Limpar</button>
+                </div>
+
+        </aside>
+    </div>
+
+    <script src="calc.js"></script>
+
+</body>
+
+</html>
